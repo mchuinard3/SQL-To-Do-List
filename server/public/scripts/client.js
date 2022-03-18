@@ -1,6 +1,6 @@
 console.log( 'js' );
 
-$( document ).ready( function(){
+$(document).ready( function(){
   console.log( 'JQ' );
   // Establish Click Listeners
   setupClickListeners()
