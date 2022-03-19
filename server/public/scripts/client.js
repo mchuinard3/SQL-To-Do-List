@@ -15,7 +15,7 @@ function setupClickListeners() {
             task: $('#nameIn').val(),
         };
         // call saveTask with the new object
-        saveTask(taskToSend);
+        addTask(taskToSend);
     });
     $('#toDo').on('click', '.completeBtn', taskCompleted);
     $('#toDo').on('click', '.deleteBtn', deleteTask);
@@ -72,18 +72,24 @@ function renderTask(tasks) {
     }
 }
 
-function saveTask() {
-    console.log('in saveTask');
+function addTask() {
+    console.log('in addTask');
     // ajax call to server to get tasks
-    let task = $(#task).val();
-    let complete = 'false';
+    let task = $('#task').val();
+    let complete = false;
+
+    let taskList = {
+        task: task,
+        complete: complete
+    }
     $.ajax({
         type: 'POST',
         url: '/toDoList',
-        data: newTask,
+        data: taskList,
     }).then(function (response) {
         console.log('Response from server.', response);
         getTask();
+        renderTask(response);
     }).catch(function (error) {
         console.log('Error in POST', error)
         alert('Unable to add task at this time. Please try again later.');
