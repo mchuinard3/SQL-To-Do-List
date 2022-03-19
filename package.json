@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/mchuinard3/weekend-sql-to-do-list#readme",
   "dependencies": {
+    "body": "^5.1.0",
     "express": "^4.17.3",
+    "parser": "^0.1.4",
     "pg": "^8.7.3"
   }
 }
