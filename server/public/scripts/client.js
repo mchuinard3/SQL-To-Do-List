@@ -8,7 +8,7 @@ $(document).ready(function () {
 });
 
 function setupClickListeners() {
-    $('#task').on('click', function () {
+    $('#addTask').on('click', function () {
         console.log('in addTask on click');
         // get user input and put in an object
         let taskToSend = {
@@ -17,8 +17,8 @@ function setupClickListeners() {
         // call saveTask with the new object
         saveTask(taskToSend);
     });
-    $('#task').on('click', '.completeBtn', taskCompleted);
-    $('#task').on('click', '.deleteBtn', deleteTask);
+    $('#toDo').on('click', '.completeBtn', taskCompleted);
+    $('#toDo').on('click', '.deleteBtn', deleteTask);
 
 }
 
@@ -44,7 +44,7 @@ function renderTask(tasks) {
         let taskList = tasks[i];
 
         if (taskList.complete === true) {
-            let row = $(`
+            $('#task').append(`
           <tr data-id=${taskList.id}>
             <td>${taskList.task}</td>
             <td>${taskList.complete}</td>
@@ -53,11 +53,9 @@ function renderTask(tasks) {
             <td><button class="deleteBtn">Delete Task</button></td>
           </tr>
         `);
-            row.data('taskList', taskList);
-            $('#task').append(row);
-            console.log(row.data('taskList'));
+            
         } else {
-            let row = $(`
+            $('#task').append(`
         <tr data-id=${taskList.id}>
           <td>${taskList.task}</td>
           <td>${taskList.complete}</td>
@@ -66,9 +64,7 @@ function renderTask(tasks) {
           <td><button class="deleteBtn">Delete Task</button></td>
         </tr>
       `);
-            row.data('taskList', taskList);
-            $('#task').append(row);
-            console.log(row.data('taskList'));
+            
         }
 
 
@@ -76,9 +72,11 @@ function renderTask(tasks) {
     }
 }
 
-function saveTask(newTask) {
-    console.log('in saveTask', newTask);
+function saveTask() {
+    console.log('in saveTask');
     // ajax call to server to get tasks
+    let task = $(#task).val();
+    let complete = 'false';
     $.ajax({
         type: 'POST',
         url: '/toDoList',
