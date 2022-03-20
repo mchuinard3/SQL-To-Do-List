@@ -57,7 +57,7 @@ function renderTask(tasks) {
             row = $(`
           <tr data-id=${task.id}> 
             <td class = "green">${task.task}</td>
-            <td>${task.complete}</td>
+            <td class = "font">${task.complete}</td>
              <td><button class="deleteBtn">Delete Task</button></td>
             </tr>
         `);
@@ -66,7 +66,7 @@ function renderTask(tasks) {
             row = $(`
         <tr data-id=${task.id}>
         <td class = "red">${task.task}</td> 
-        <td>${task.complete}</td>
+        <td class = "font">${task.complete}</td>
         <td><button class="deleteBtn">Delete Task</button></td>
         <td><button class="completeBtn">Task Completed</button></td>
         </tr>
