@@ -1,25 +1,33 @@
 console.log('js');
 
-$(document).ready(function () {
+$(document).ready(onReady) 
     console.log('JQ');
+    
+   
+   function onReady() {
+    $('#toDo').on('click', '.completeBtn', taskCompleted);
+    // $('#toDo').on('click', '.deleteBtn', deleteTask);
     // Establish Click Listeners
     setupClickListeners();
     getTask();
-});
+    // $('#task').val('');
+}
 
 function setupClickListeners() {
-    $('#addTask').on('click', function () {
+        $('#addTask').on('click', function () {
         console.log('in addTask on click');
         // get user input and put in an object
         let taskToSend = {
-            task: $('#nameIn').val(),
-        };
+            task: $('#task').val(),
+        }
+        
         // call saveTask with the new object
         addTask(taskToSend);
-    });
-    $('#toDo').on('click', '.completeBtn', taskCompleted);
-    $('#toDo').on('click', '.deleteBtn', deleteTask);
+    
+   
+    
 
+        })
 }
 
 function getTask() {
@@ -38,100 +46,100 @@ function getTask() {
 } // end getTask
 
 function renderTask(tasks) {
-    $('#task').empty();
+    
+    
+    let row;
+    $('#toDo').empty();
+    // for (let i = 0; i < tasks.length; i += 1) {
+    //     let taskList = tasks[i];
+        for (let task of tasks) {
 
-    for (let i = 0; i < tasks.length; i += 1) {
-        let taskList = tasks[i];
-
-        if (taskList.complete === true) {
-            $('#task').append(`
-          <tr data-id=${taskList.id}>
-            <td>${taskList.task}</td>
-            <td>${taskList.complete}</td>
-            <td class= "tablerow green">${taskList.complete}</td>
-            <td></td>
-            <td><button class="deleteBtn">Delete Task</button></td>
+        if (task.complete === false) {
+            row = $(`
+          <tr> 
+            <td>${task.id}</td>
+            <td>${task.task}</td>
+            
+            
+            <td><button class="completeBtn">Task Completed</button></td>
+            
           </tr>
         `);
-            
+
         } else {
-            $('#task').append(`
-        <tr data-id=${taskList.id}>
-          <td>${taskList.task}</td>
-          <td>${taskList.complete}</td>
-          <td class= "tablerow red">${taskList.complete}</td>
+            row = $(`
+        <tr>
+        <td>${task.id}</td> 
+        
+          <td>${task.task}</td>
+          
+          
           <td><button class="completeBtn">Task Completed</button></td>
           <td><button class="deleteBtn">Delete Task</button></td>
         </tr>
-      `);
-            
-        }
+      `)};
 
-
-
+      row.data('task', task);
+      $('#toDo').append(row);
+      $('#buttonStatus').append(row);
     }
-}
+    }
 
-function addTask() {
+
+function addTask(taskToSend) {
     console.log('in addTask');
-    // ajax call to server to get tasks
-    let task = $('#task').val();
-    let complete = false;
+   // ajax call to server to get tasks
 
-    let taskList = {
-        task: task,
-        complete: complete
-    }
     $.ajax({
         type: 'POST',
         url: '/toDoList',
-        data: taskList,
+        data: taskToSend,
     }).then(function (response) {
         console.log('Response from server.', response);
+        
         getTask();
-        renderTask(response);
     }).catch(function (error) {
         console.log('Error in POST', error)
         alert('Unable to add task at this time. Please try again later.');
     });
-
 }
 
 function taskCompleted() {
     console.log('clicked');
-   
-    let id = $(this).closest('tr').data('id');
-    
-    console.log(id);
-  
-      $.ajax({
-          url: `/toDoList/${id}`,//just like delete!
-          method: 'PUT',
-          data: {id: id}//just like POST!
-      }).then(function (response) {
-          console.log('updated!');
-          getTask();//so DOM updates after delete (ie new render)!
-  
-      }).catch(function (err) {
-          console.log(err);
-  
-      })
-  }
 
-  function deleteTask() {
+    let task = $(this).closest('tr').data('task');
+    let userTask = $(this).data('complete');
+
+    
+
+    $.ajax({
+        url: `/toDoList/${task.id}`,//just like delete!
+        method: 'PUT',
+        data: { task: !userTask }//just like POST!
+    }).then(function (response) {
+        console.log('updated!');
+        getTask();//so DOM updates after delete (ie new render)!
+
+    }).catch(function (err) {
+        console.log(err);
+
+    })
+}
+
+function deleteTask() {
     let id = $(this).closest('tr').data('id');
     console.log('CLICKED DELETE', id);
     console.log(id);
-  
-  
+
+
     $.ajax({
-      url: `/toDoList/${id}`,
-      method: 'DELETE'
+        url: `/toDoList/${id}`,
+        method: 'DELETE'
     }).then(function (response) {
-      console.log('Deleted');
-      getTask();
+        console.log('Deleted');
+        getTask();
     }).catch(function (err) {
-      console.log(err);
+        console.log(err);
     })
-  
-  }
+
+}
