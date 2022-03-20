@@ -56,8 +56,8 @@ function renderTask(tasks) {
         if (task.complete === true) {
             row = $(`
           <tr data-id=${task.id}> 
-            <td>${task.id}</td>
-            <td>${task.task}</td>
+            <td class = "green">${task.task}</td>
+            <td>${task.complete}</td>
              <td><button class="deleteBtn">Delete Task</button></td>
             </tr>
         `);
@@ -65,8 +65,8 @@ function renderTask(tasks) {
         } else {
             row = $(`
         <tr data-id=${task.id}>
-        <td>${task.id}</td> 
-        <td>${task.task}</td>
+        <td class = "red">${task.task}</td> 
+        <td>${task.complete}</td>
         <td><button class="deleteBtn">Delete Task</button></td>
         <td><button class="completeBtn">Task Completed</button></td>
         </tr>
