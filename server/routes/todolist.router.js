@@ -43,7 +43,7 @@ tasksRouter.post('/',  (req, res) => {
 tasksRouter.put('/:id', (req, res) => {
     
     console.log(req.body);
-    res.sendStatus(200);
+    
 
     queryText = `
         UPDATE "to_do_list"
@@ -73,7 +73,7 @@ tasksRouter.delete('/:id', (req, res) => {
         WHERE "id" = $1;
     `;
   // Sanitize the data
-  values = [id];
+  const values = [id];
 
   pool.query(queryText, values)
     .then(result => {
