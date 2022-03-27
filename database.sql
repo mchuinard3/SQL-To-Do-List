@@ -4,5 +4,5 @@ CREATE TABLE "to_do_list" (
 	"complete" BOOLEAN NOT NULL
 );
 
-INSERT INTO "to_do_list" (task, complete)
-VALUES ('grocery shopping', false), ('take out trash', false), ('call mom', false);
+-- INSERT INTO "to_do_list" (task, complete)
+-- VALUES ('grocery shopping', false), ('take out trash', false), ('call mom', false);
